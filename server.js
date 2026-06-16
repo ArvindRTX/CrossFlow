@@ -3,12 +3,19 @@ const express = require('express');
 const cors = require('cors');
 const fs = require('fs');
 const path = require('path');
-const { configure, trackTrain } = require('irctc-connect');
+let configure, trackTrain;
 
-// Configure irctc-connect if API key is provided
-const irctcApiKey = process.env.IRCTC_API_KEY;
-if (irctcApiKey && irctcApiKey !== 'your_api_key_here') {
-  configure(irctcApiKey);
+// Lazy initialization wrapper for irctc-connect (ESM)
+async function ensureSDKInitialized() {
+  if (!configure || !trackTrain) {
+    const sdk = await import('irctc-connect');
+    configure = sdk.configure;
+    trackTrain = sdk.trackTrain;
+    const irctcApiKey = process.env.IRCTC_API_KEY;
+    if (irctcApiKey && irctcApiKey !== 'your_api_key_here') {
+      configure(irctcApiKey);
+    }
+  }
 }
 
 // Initialize Supabase Client (Vercel Production)
@@ -223,6 +230,7 @@ async function fetchTrainDelay(trainNo) {
   }
 
   try {
+    await ensureSDKInitialized();
     const today = new Date();
     const dd = String(today.getDate()).padStart(2, '0');
     const mm = String(today.getMonth() + 1).padStart(2, '0');
