@@ -1,0 +1,17 @@
+{
+  "name": "railway-crossing-tracker",
+  "version": "1.0.0",
+  "description": "CrossFlow - Railway Crossing Tracker for Pavoorchatram and Tenkasi",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.4.2",
+    "express": "^4.19.2",
+    "irctc-connect": "^3.3.0",
+    "xlsx": "^0.18.5"
+  }
+}

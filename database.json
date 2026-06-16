@@ -1,0 +1,227 @@
+{
+  "gates": {
+    "lc-83": {
+      "id": "lc-83",
+      "name": "Pavoorchatram Gate (LC-83)",
+      "location": "Pavoorchatram Highway (SH-39)",
+      "status": "closed",
+      "lastUpdated": 1781590273235,
+      "reportedBy": "Ramesh",
+      "confidence": 100
+    },
+    "lc-82": {
+      "id": "lc-82",
+      "name": "Keelapuliyur Gate (LC-82)",
+      "location": "Keelapuliyur Road",
+      "status": "closed",
+      "lastUpdated": 1781590363233,
+      "reportedBy": "Ganesh",
+      "confidence": 100
+    },
+    "lc-84": {
+      "id": "lc-84",
+      "name": "Tenkasi Junction East (LC-84)",
+      "location": "Tenkasi Railway Station Road",
+      "status": "open",
+      "lastUpdated": 1781590183236,
+      "reportedBy": "Ganesh",
+      "confidence": 100
+    }
+  },
+  "reports": [
+    {
+      "id": "1781590363233",
+      "gateId": "lc-82",
+      "gateName": "Keelapuliyur Gate (LC-82)",
+      "status": "closed",
+      "reportedBy": "Ganesh",
+      "timestamp": 1781590363233
+    },
+    {
+      "id": "1781590357230",
+      "gateId": "lc-82",
+      "gateName": "Keelapuliyur Gate (LC-82)",
+      "status": "open",
+      "reportedBy": "Ramesh",
+      "timestamp": 1781590357230
+    },
+    {
+      "id": "1781590273235",
+      "gateId": "lc-83",
+      "gateName": "Pavoorchatram Gate (LC-83)",
+      "status": "closed",
+      "reportedBy": "Ramesh",
+      "timestamp": 1781590273235
+    },
+    {
+      "id": "1781590183236",
+      "gateId": "lc-84",
+      "gateName": "Tenkasi Junction East (LC-84)",
+      "status": "open",
+      "reportedBy": "Ganesh",
+      "timestamp": 1781590183236
+    },
+    {
+      "id": "1781590177228",
+      "gateId": "lc-84",
+      "gateName": "Tenkasi Junction East (LC-84)",
+      "status": "closed",
+      "reportedBy": "Ganesh",
+      "timestamp": 1781590177228
+    },
+    {
+      "id": "1781590093235",
+      "gateId": "lc-84",
+      "gateName": "Tenkasi Junction East (LC-84)",
+      "status": "open",
+      "reportedBy": "Ganesh",
+      "timestamp": 1781590093235
+    },
+    {
+      "id": "1781590086250",
+      "gateId": "lc-82",
+      "gateName": "Keelapuliyur Gate (LC-82)",
+      "status": "closed",
+      "reportedBy": "Ramesh",
+      "timestamp": 1781590086250
+    },
+    {
+      "id": "1781589996253",
+      "gateId": "lc-83",
+      "gateName": "Pavoorchatram Gate (LC-83)",
+      "status": "open",
+      "reportedBy": "Ramesh",
+      "timestamp": 1781589996253
+    },
+    {
+      "id": "1781589933652",
+      "gateId": "lc-83",
+      "gateName": "Pavoorchatram Gate (LC-83)",
+      "status": "closed",
+      "reportedBy": "Ganesh",
+      "timestamp": 1781589933652
+    },
+    {
+      "id": "1781589931115",
+      "gateId": "lc-83",
+      "gateName": "Pavoorchatram Gate (LC-83)",
+      "status": "open",
+      "reportedBy": "Ganesh",
+      "timestamp": 1781589931115
+    },
+    {
+      "id": "1781589823240",
+      "gateId": "lc-84",
+      "gateName": "Tenkasi Junction East (LC-84)",
+      "status": "closed",
+      "reportedBy": "Ganesh",
+      "timestamp": 1781589823240
+    },
+    {
+      "id": "1781589757080",
+      "gateId": "lc-83",
+      "gateName": "Pavoorchatram Gate (LC-83)",
+      "status": "closed",
+      "reportedBy": "Suresh",
+      "timestamp": 1781589757080
+    }
+  ],
+  "chat": [
+    {
+      "id": "alert-1781590363233",
+      "sender": "System Alert",
+      "text": "📢 Ganesh marked Keelapuliyur Gate (LC-82) as CLOSED!",
+      "timestamp": 1781590363233,
+      "isAlert": true
+    },
+    {
+      "id": "alert-1781590357230",
+      "sender": "System Alert",
+      "text": "📢 Ramesh marked Keelapuliyur Gate (LC-82) as OPEN!",
+      "timestamp": 1781590357230,
+      "isAlert": true
+    },
+    {
+      "id": "alert-1781590273235",
+      "sender": "System Alert",
+      "text": "📢 Ramesh marked Pavoorchatram Gate (LC-83) as CLOSED!",
+      "timestamp": 1781590273235,
+      "isAlert": true
+    },
+    {
+      "id": "alert-1781590183236",
+      "sender": "System Alert",
+      "text": "📢 Ganesh marked Tenkasi Junction East (LC-84) as OPEN!",
+      "timestamp": 1781590183236,
+      "isAlert": true
+    },
+    {
+      "id": "alert-1781590177228",
+      "sender": "System Alert",
+      "text": "📢 Ganesh marked Tenkasi Junction East (LC-84) as CLOSED!",
+      "timestamp": 1781590177228,
+      "isAlert": true
+    },
+    {
+      "id": "alert-1781590093235",
+      "sender": "System Alert",
+      "text": "📢 Ganesh marked Tenkasi Junction East (LC-84) as OPEN!",
+      "timestamp": 1781590093235,
+      "isAlert": true
+    },
+    {
+      "id": "alert-1781590086250",
+      "sender": "System Alert",
+      "text": "📢 Ramesh marked Keelapuliyur Gate (LC-82) as CLOSED!",
+      "timestamp": 1781590086250,
+      "isAlert": true
+    },
+    {
+      "id": "alert-1781589996253",
+      "sender": "System Alert",
+      "text": "📢 Ramesh marked Pavoorchatram Gate (LC-83) as OPEN!",
+      "timestamp": 1781589996253,
+      "isAlert": true
+    },
+    {
+      "id": "alert-1781589933652",
+      "sender": "System Alert",
+      "text": "📢 Ganesh marked Pavoorchatram Gate (LC-83) as CLOSED!",
+      "timestamp": 1781589933652,
+      "isAlert": true
+    },
+    {
+      "id": "alert-1781589931115",
+      "sender": "System Alert",
+      "text": "📢 Ganesh marked Pavoorchatram Gate (LC-83) as OPEN!",
+      "timestamp": 1781589931115,
+      "isAlert": true
+    },
+    {
+      "id": "alert-1781589823240",
+      "sender": "System Alert",
+      "text": "📢 Ganesh marked Tenkasi Junction East (LC-84) as CLOSED!",
+      "timestamp": 1781589823240,
+      "isAlert": true
+    },
+    {
+      "id": "1781589778155",
+      "sender": "Suresh",
+      "text": "LC-83 is closed, heading to bypass!",
+      "timestamp": 1781589778155
+    },
+    {
+      "id": "alert-1781589757080",
+      "sender": "System Alert",
+      "text": "📢 Suresh marked Pavoorchatram Gate (LC-83) as CLOSED!",
+      "timestamp": 1781589757080,
+      "isAlert": true
+    },
+    {
+      "id": 1,
+      "sender": "System",
+      "text": "Welcome to CrossFlow! App initialized for Pavoorchatram-Tenkasi commuters.",
+      "timestamp": 1781585940570
+    }
+  ]
+}
