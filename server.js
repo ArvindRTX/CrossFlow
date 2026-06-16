@@ -11,6 +11,15 @@ if (irctcApiKey && irctcApiKey !== 'your_api_key_here') {
   configure(irctcApiKey);
 }
 
+// Initialize Supabase Client (Vercel Production)
+const { createClient } = require('@supabase/supabase-js');
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_KEY;
+let supabase = null;
+if (supabaseUrl && supabaseKey) {
+  supabase = createClient(supabaseUrl, supabaseKey);
+}
+
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -88,6 +97,66 @@ let cache = {
     { text: 'CrossFlow Prediction Engine and GPS Mapper Initialized.', timestamp: Date.now() }
   ]
 };
+
+// Load state from Supabase or local database.json fallback
+async function loadState() {
+  if (supabase) {
+    try {
+      const { data, error } = await supabase
+        .from('state')
+        .select('data')
+        .eq('id', 1)
+        .single();
+      if (data && data.data) {
+        cache = data.data;
+        console.log('[CrossFlow Log] State loaded successfully from Supabase.');
+        return;
+      }
+      if (error && error.code !== 'PGRST116') {
+        console.error('[Supabase Error] Load failed:', error.message);
+      }
+    } catch (err) {
+      console.error('[Supabase Error] Load failed:', err);
+    }
+  }
+
+  try {
+    const dbPath = path.join(__dirname, 'database.json');
+    if (fs.existsSync(dbPath)) {
+      const raw = fs.readFileSync(dbPath, 'utf8');
+      cache = JSON.parse(raw);
+      console.log('[CrossFlow Log] State loaded successfully from local file database.json.');
+    }
+  } catch (err) {
+    console.warn('[CrossFlow Warning] Local state load failed, using default cache:', err.message);
+  }
+}
+
+// Save state to Supabase or local database.json fallback
+async function saveState() {
+  if (supabase) {
+    try {
+      const { error } = await supabase
+        .from('state')
+        .upsert({ id: 1, data: cache, updated_at: new Date() });
+      if (error) {
+        console.error('[Supabase Error] Save failed:', error.message);
+      } else {
+        console.log('[CrossFlow Log] State saved successfully to Supabase.');
+      }
+    } catch (err) {
+      console.error('[Supabase Error] Save failed:', err);
+    }
+  } else {
+    try {
+      const dbPath = path.join(__dirname, 'database.json');
+      fs.writeFileSync(dbPath, JSON.stringify(cache, null, 2));
+      console.log('[CrossFlow Log] State saved successfully to local file database.json.');
+    } catch (err) {
+      console.error('[CrossFlow Error] Local state save failed:', err.message);
+    }
+  }
+}
 
 // Weather coordinates: Pavoorchatram
 const LAT = 8.9036;
@@ -647,7 +716,8 @@ function addSystemLog(text) {
 }
 
 // API: Retrieve dynamic status
-app.get('/api/status', (req, res) => {
+app.get('/api/status', async (req, res) => {
+  await loadState();
   res.json({
     gates: cache.gates,
     weather: cache.weather,
@@ -659,25 +729,51 @@ app.get('/api/status', (req, res) => {
 // API: Manual force update / poll trigger
 app.post('/api/refresh', async (req, res) => {
   addSystemLog('Manual status refresh triggered by user.');
+  await loadState();
   await updateWeather();
   await refreshActiveTrainsManual();
   updateAllTrainPositionsScheduled();
+  await saveState();
   res.json({ success: true, cache });
 });
 
-// Run background loops
-updateWeather();
-setInterval(updateWeather, 15 * 60 * 1000); // Poll weather (Free)
+// API: Vercel Cron Job Trigger (Secured with CRON_SECRET)
+app.get('/api/cron/update', async (req, res) => {
+  const authHeader = req.headers.authorization;
+  if (process.env.CRON_SECRET && authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+    return res.status(401).json({ success: false, error: 'Unauthorized' });
+  }
 
-// Run active train polling loop every 3 minutes (Restricted to 7 AM - 9 PM, filtered by schedule)
-updateActiveTrainsLive();
-setInterval(updateActiveTrainsLive, 3 * 60 * 1000);
+  console.log('[Cron Job] Running active train and weather updates...');
+  await loadState();
+  await updateWeather();
+  await updateActiveTrainsLive();
+  updateAllTrainPositionsScheduled();
+  await saveState();
 
-// Run schedule updates (Free, 0 API calls)
-updateAllTrainPositionsScheduled();
-setInterval(updateAllTrainPositionsScheduled, 60000); // Interpolate track positions every 60s
+  res.json({ success: true, message: 'Cron updates processed.' });
+});
+
+// Run background loops & load state
+(async () => {
+  await loadState();
+  
+  updateWeather();
+  setInterval(updateWeather, 15 * 60 * 1000); // Poll weather (Free)
+
+  // Run active train polling loop every 3 minutes (Restricted to 7 AM - 9 PM, filtered by schedule)
+  updateActiveTrainsLive();
+  setInterval(updateActiveTrainsLive, 3 * 60 * 1000);
+
+  // Run schedule updates (Free, 0 API calls)
+  updateAllTrainPositionsScheduled();
+  setInterval(updateAllTrainPositionsScheduled, 60000); // Interpolate track positions every 60s
+})();
 
 // Start server
-app.listen(PORT, '0.0.0.0', () => {
+const server = app.listen(PORT, '0.0.0.0', () => {
   console.log(`CrossFlow server running on http://localhost:${PORT}`);
 });
+
+// Export app for Vercel serverless deployment
+module.exports = app;
