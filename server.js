@@ -758,22 +758,29 @@ app.get('/api/cron/update', async (req, res) => {
 (async () => {
   await loadState();
   
-  updateWeather();
-  setInterval(updateWeather, 15 * 60 * 1000); // Poll weather (Free)
+  if (process.env.VERCEL !== '1') {
+    updateWeather();
+    setInterval(updateWeather, 15 * 60 * 1000); // Poll weather (Free)
 
-  // Run active train polling loop every 3 minutes (Restricted to 7 AM - 9 PM, filtered by schedule)
-  updateActiveTrainsLive();
-  setInterval(updateActiveTrainsLive, 3 * 60 * 1000);
+    // Run active train polling loop every 3 minutes (Restricted to 7 AM - 9 PM, filtered by schedule)
+    updateActiveTrainsLive();
+    setInterval(updateActiveTrainsLive, 3 * 60 * 1000);
 
-  // Run schedule updates (Free, 0 API calls)
-  updateAllTrainPositionsScheduled();
-  setInterval(updateAllTrainPositionsScheduled, 60000); // Interpolate track positions every 60s
+    // Run schedule updates (Free, 0 API calls)
+    updateAllTrainPositionsScheduled();
+    setInterval(updateAllTrainPositionsScheduled, 60000); // Interpolate track positions every 60s
+  } else {
+    // On Vercel, just run the scheduled position interpolation once for this request context
+    updateAllTrainPositionsScheduled();
+  }
 })();
 
 // Start server
-const server = app.listen(PORT, '0.0.0.0', () => {
-  console.log(`CrossFlow server running on http://localhost:${PORT}`);
-});
+if (process.env.VERCEL !== '1') {
+  app.listen(PORT, '0.0.0.0', () => {
+    console.log(`CrossFlow server running on http://localhost:${PORT}`);
+  });
+}
 
 // Export app for Vercel serverless deployment
 module.exports = app;
